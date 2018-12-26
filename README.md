@@ -152,7 +152,7 @@ Everything so far, plus:
 
 // ...
 ```
-PS. Beware of errors!  Put in try/catches at steps that are prone to errors.
+PS. Beware of errors!  Whenever you come across a test case that throws an error, comment it out.  not next to it which step threw an error and why.  
 
 [TOP](#expansions)
 
