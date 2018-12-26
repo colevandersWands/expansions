@@ -14,6 +14,7 @@ learning objectives
 * [arithmetic operators](#arithmetic-operators)
 * [in-place operators](#in-place-operators)
 * [all primitive operators](#all-primitive-operators)
+* [comma operator](#comma-operator)
 * [reference types](#reference-types)
 
 ---
@@ -82,7 +83,6 @@ Limited to these operators:
 Limited to these operators:
 * x++, ++x, x--, --x
 * +=, -=, *=, /=, %=
-* Number
 * arithmetic operators
 
 ```js
@@ -101,11 +101,29 @@ Limited to these operators:
 
 ## All Primitive Operators
 
-Everything so far
+Everything so far, plus:
+* comma operator
 
 ```js
 { let a, b, c;
   a-- > !( Number(b) || String(c) ); }
+
+// ...
+```
+
+[TOP](#expansions)
+
+---
+
+## Comma Operator
+
+Everything so far, plus:
+* comma operator
+* =
+
+```js
+{ let a, b, c, d;
+  a + b, a += b, c = d <= c, a++; }
 
 // ...
 ```
