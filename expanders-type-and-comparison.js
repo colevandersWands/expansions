@@ -1,1 +1,0 @@
-// stick to explicit coercions, typeof & comparisons

@@ -94,7 +94,9 @@ console.log('--- expand it ---')
   run_tests(expanded, test_cases);
 
 
-console.log('--- abstracted ---');
+console.log('--- abstract it ---');
+  // this step will be trickier for
+  //  comma, spread, destructuring
 
   function abstracted(a, b, c, d, e) {
     let result;
@@ -122,7 +124,7 @@ console.log('--- abstracted ---');
     return _a && _b;
   };
 
-console.log('--- composed ---')
+console.log('--- compose it ---')
 
   function composed(a, b, c, d, e) {
     return and(loosely(plus(a, b), less_than(c, d)), e)
