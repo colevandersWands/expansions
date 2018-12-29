@@ -94,22 +94,34 @@ console.log('--- expand it ---')
   run_tests(expanded, test_cases);
 
 
+console.log('--- log it ---')
+
+  // ((a + b) == (c < d)) && e 
+  
+  function logged(a, b, c, d, e) {        const log = [{a,b,c,d,e}];
+    const step_1 = a + b;                 log.push({op: 'a + b', state: step_1});
+    const step_2 = c < d;                 log.push({op: 'c < d', state: step_2});
+    const step_3 = step_1 == step_2;      log.push({op: 'step_1 == step_2', state: step_3});
+    const step_4 = step_3 && e;           log.push({op: 'step_3 && e', state: step_4});
+    return log
+  }
+  state_op(logged, test_cases);
+
+
 console.log('--- abstract it ---');
   // this step will be trickier for
   //  comma, spread, destructuring
 
   function abstracted(a, b, c, d, e) {
     let result;
-    {
-      const step_1 = plus(a, b)
-      const step_2 = less_than(c, d)
-      const step_3 = loosely(step_1, step_2)
-      const step_4 = and(step_3, e)
-      result = step_4
-    }
+    const step_1 = plus(a, b)
+    const step_2 = less_than(c, d)
+    const step_3 = loosely(step_1, step_2)
+    const step_4 = and(step_3, e)
+    result = step_4
     return result;
   }
-  run_tests(substituted, test_cases)
+  run_tests(abstracted, test_cases)
 
   function plus(_a, _b) {
     return _a + _b;
@@ -129,45 +141,45 @@ console.log('--- compose it ---')
   function composed(a, b, c, d, e) {
     return and(loosely(plus(a, b), less_than(c, d)), e)
   }
-  run_tests(recompressed, test_cases)
+  run_tests(composed, test_cases)
 
 
 
 
 
-  // testing utils
-  function run_tests(_target, _cases, _log) {
-    for (let t_case of _cases) {
-      let expected = t_case.expected;
+// ---------- test utils ----------
 
-      let actual;
-      let msg;
-      let log;
-      if (_log) {
-        log = _target(... t_case.args, true);
-        actual = log.result;
-      } else {
-        actual = _target(... t_case.args, false);
-      };
+function run_tests(_target, _cases) {
+  for (let t_case of _cases) {
+    const expected = t_case.expected;
+    const actual = _target(... t_case.args, false);
 
-      let pass;
-      if (typeof expected === 'object') {
-        actual = JSON.stringify(actual);
-        expected = JSON.stringify(expected);
-        pass = actual === expected;
-      } else {
-        pass = actual === expected;
-      };
+    let pass;
+    if (typeof expected === 'object') {
+      const _actual = JSON.stringify(actual);
+      const _expected = JSON.stringify(expected);
+      pass = _actual === _expected;
+    } else {
+      pass = actual === expected;
+    };
 
-      if (!pass && _log) {
-        console.log(`    ${t_case.name}: \n` + 
-            "actual: ", log, "\n" +
-            `expected: {${typeof expected}, ${expected}}`);
-      } else if (!pass) {
-        console.log(`${t_case.name}: \n` + 
-            `   actual: {${typeof actual}, ${actual}} \n` +
-            `   expected: {${typeof expected}, ${expected}}`);
-      };
+    if (!pass) {
+      console.log(`${t_case.name}: \n`);
+      console.log(`   actual: ${typeof actual},`, actual);
+      console.log(`   expected: ${typeof expected},`, expected);
     };
   };
+};
+function state_op(_target, _cases) {
+  for (let _case of _cases) {
+    const log = _target(..._case.args);
+    let args = log[0];
+    console.log("step 0, args: ", args);
+    const report = {};
+    for (let i = 1; i < log.length; i++) {
+      report['step '+i] = log[i];
+    };
+    console.table(report);
+  };
+};
 }
